@@ -6,11 +6,24 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -31,17 +44,70 @@ public class registrar_alumno extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet registrar_alumno</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet registrar_alumno at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+         try (PrintWriter out = response.getWriter()) {
+            HttpSession sesion = request.getSession();
+            if (sesion.getAttribute("user") == null) {
+                response.sendRedirect("login.jsp");
+            }
+
+            if (!request.getParameter("nombre").isEmpty() && !request.getParameter("edad").isEmpty()
+                    && !request.getParameter("pago").isEmpty() && !request.getParameter("tutor_legal").isEmpty()
+                    && !request.getParameter("id_grupo").isEmpty()) {
+                
+                //Obtener datos formulario
+                String nombre = request.getParameter("nombre");
+                String edad = request.getParameter("edad");
+                String pago = request.getParameter("pago");
+                String tutor_legal = request.getParameter("tutor_legal");
+                String id_grupo = (String) sesion.getAttribute("id_grupo");
+                
+                
+                //Conexión con el servicio
+                String result;
+                String url = "http://127.0.0.1:5000/admin/new_alumno";
+                HttpPost post = new HttpPost(url);
+
+                // Añadimos parametros a la petición HTTP
+                List<NameValuePair> urlParameters = new ArrayList<>();
+                urlParameters.add(new BasicNameValuePair("nombre", nombre));
+                urlParameters.add(new BasicNameValuePair("edad", edad));
+                urlParameters.add(new BasicNameValuePair("pago_hecho", pago));
+                urlParameters.add(new BasicNameValuePair("tutor_legal", tutor_legal));
+                urlParameters.add(new BasicNameValuePair("id_grupo", id_grupo));
+
+                post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+                try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                        CloseableHttpResponse resp = httpClient.execute(post)) {
+                    result = EntityUtils.toString(resp.getEntity());
+                    resp.close();
+                    httpClient.close();
+                } catch (Exception e) {
+                    Logger.getLogger(registrar_alumno.class.getName()).log(Level.SEVERE, null, e);
+                    result = "error";
+                }
+                
+                   
+                if ("Success!".equals(result)) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Usuario subido correctamente</title>");
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1> Usuario subido correctamente </h1>");
+                    out.println(" <a href=\"registrarImagen.jsp\">Volver a registrar otro usuario</a><br>");
+                    out.println(" <a href=\"menu.jsp\">Volver al menú </a><br>");
+                    out.println("</body>");
+                    out.println("</html>");
+                } else {
+                    response.sendRedirect("error.jsp");
+                }
+                
+
+            } else {
+                response.sendRedirect("error.jsp");
+            }
         }
     }
 
