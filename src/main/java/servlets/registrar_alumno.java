@@ -61,7 +61,6 @@ public class registrar_alumno extends HttpServlet {
                 String tutor_legal = request.getParameter("tutor_legal");
                 String id_grupo = (String) sesion.getAttribute("id_grupo");
                 
-                
                 //Conexión con el servicio
                 String result;
                 String url = "http://127.0.0.1:5000/admin/new_alumno";
@@ -97,7 +96,7 @@ public class registrar_alumno extends HttpServlet {
                     out.println("<body>");
                     out.println("<h1> Alumno registrado correctamente </h1>");
                     out.println(" <a href=\"registrar_alumno.jsp\">Volver a registrar otro alumno</a><br>");
-                    out.println(" <a href=\"menu.jsp\">Volver al menú </a><br>");
+                    out.println(" <a href=\"home-administracion.jsp\">Volver al menú </a><br>");
                     out.println("</body>");
                     out.println("</html>");
                 } else {

@@ -88,7 +88,7 @@ public class registrar_profesor extends HttpServlet {
                     out.println("<body>");
                     out.println("<h1> Profesor registrado correctamente </h1>");
                     out.println(" <a href=\"registrar-profesor.jsp\">Volver a registrar otro profesor</a><br>");
-                    out.println(" <a href=\"menu.jsp\">Volver al menú </a><br>");
+                    out.println(" <a href=\"home-administracion.jsp\">Volver al menú </a><br>");
                     out.println("</body>");
                     out.println("</html>");
                 } else {
