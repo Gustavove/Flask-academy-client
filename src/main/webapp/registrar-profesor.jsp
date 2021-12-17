@@ -1,7 +1,7 @@
 <%-- 
-    Document   : menu
-    Created on : 28-sep-2021, 8:42:17
-    Author     : alumne
+    Document   : registrar-profesor
+    Created on : 17 dic. 2021, 20:21:26
+    Author     : gustavo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -24,14 +24,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Menu</title>
+        <title>Registrar Alumno</title>
     </head>
     <body>
-        <a href="registrar-profesor.jsp">Registrar profesor</a><br>
-        <a href="registrar-alumno.jsp">Registrar alumno</a><br>
-        <a href="consulta-profe.jsp">Ver información de un profesor</a><br><br>
-        
-        <a href="logout.jsp">Logout</a>
-        <!-- Només ho poso com a comment el [G/J]-->
+        <form action="registrar_profesor" method="post">
+            <table style="width: 50%">
+                <tr>
+                    <td>Nombre</td>
+                    <td><input type="text" name="nombre" /></td>
+		</tr>
+            </table>
+            <input type="submit" value="Registrar" />
+        </form>
     </body>
 </html>

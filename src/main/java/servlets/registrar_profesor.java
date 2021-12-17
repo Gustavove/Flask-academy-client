@@ -1,8 +1,9 @@
+package servlets;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,8 +30,8 @@ import org.apache.http.util.EntityUtils;
  *
  * @author gustavo
  */
-@WebServlet(name = "registrar_alumno", urlPatterns = {"/registrar_alumno"})
-public class registrar_alumno extends HttpServlet {
+@WebServlet(urlPatterns = {"/registrar_profesor"})
+public class registrar_profesor extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,36 +45,26 @@ public class registrar_alumno extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             HttpSession sesion = request.getSession();
             if (sesion.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             }
 
-            if (!request.getParameter("nombre").isEmpty() && !request.getParameter("edad").isEmpty()
-                    && !request.getParameter("pago").isEmpty() && !request.getParameter("tutor_legal").isEmpty()
-                    && !request.getParameter("id_grupo").isEmpty()) {
+            if (!request.getParameter("nombre").isEmpty()) {
                 
                 //Obtener datos formulario
                 String nombre = request.getParameter("nombre");
-                String edad = request.getParameter("edad");
-                String pago = request.getParameter("pago");
-                String tutor_legal = request.getParameter("tutor_legal");
-                String id_grupo = (String) sesion.getAttribute("id_grupo");
-                
                 
                 //Conexión con el servicio
                 String result;
-                String url = "http://127.0.0.1:5000/admin/new_alumno";
+                String url = "http://127.0.0.1:5000/admin/new_profesor";
                 HttpPost post = new HttpPost(url);
 
                 // Añadimos parametros a la petición HTTP
                 List<NameValuePair> urlParameters = new ArrayList<>();
                 urlParameters.add(new BasicNameValuePair("nombre", nombre));
-                urlParameters.add(new BasicNameValuePair("edad", edad));
-                urlParameters.add(new BasicNameValuePair("pago_hecho", pago));
-                urlParameters.add(new BasicNameValuePair("tutor_legal", tutor_legal));
-                urlParameters.add(new BasicNameValuePair("id_grupo", id_grupo));
+                urlParameters.add(new BasicNameValuePair("puntuacion", "0.0"));
 
                 post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
@@ -92,11 +83,11 @@ public class registrar_alumno extends HttpServlet {
                     out.println("<!DOCTYPE html>");
                     out.println("<html>");
                     out.println("<head>");
-                    out.println("<title>Alumno registrado correctamente</title>");
+                    out.println("<title>Profesor registrado correctamente</title>");
                     out.println("</head>");
                     out.println("<body>");
-                    out.println("<h1> Alumno registrado correctamente </h1>");
-                    out.println(" <a href=\"registrar_alumno.jsp\">Volver a registrar otro alumno</a><br>");
+                    out.println("<h1> Profesor registrado correctamente </h1>");
+                    out.println(" <a href=\"registrar-profesor.jsp\">Volver a registrar otro profesor</a><br>");
                     out.println(" <a href=\"menu.jsp\">Volver al menú </a><br>");
                     out.println("</body>");
                     out.println("</html>");
