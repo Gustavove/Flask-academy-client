@@ -8,8 +8,16 @@
 <%-- Comprueba que el usuario tiene una sessión activa --%>
 <%
     HttpSession sesion = request.getSession();  
-    if (sesion.getAttribute("user") == null ){
+    if (sesion.getAttribute("user") == null){
        response.sendRedirect("login.jsp");
+    }
+    
+    if("Alumno".equals(sesion.getAttribute("tipo"))){
+        response.sendRedirect("home-alumnos.jsp");
+    }
+    
+    if("Profesor".equals(sesion.getAttribute("tipo"))){
+        response.sendRedirect("home-profes.jsp");
     }
 %>
 <!DOCTYPE html>

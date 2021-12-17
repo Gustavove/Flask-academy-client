@@ -10,7 +10,7 @@
     HttpSession sesion = request.getSession();  
     if (sesion.getAttribute("user") != null ){
        response.sendRedirect("menu.jsp");
-    }
+    }  
 %>
 
 <!DOCTYPE html>
