@@ -12,6 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -43,6 +51,11 @@ public class login extends HttpServlet {
 
                 /*Conexión con el servicio */ 
                 
+                String url = "http://127.0.0.1:5000/login?username=" + name_user + "&password=" + password;
+                CloseableHttpClient httpClient = HttpClients.createDefault();
+                
+                String result;
+                String tipus;
                 try{
                     HttpGet req = new HttpGet(url);
                     CloseableHttpResponse res = httpClient.execute(req); 
@@ -50,11 +63,14 @@ public class login extends HttpServlet {
                       //Se obtiene la respuesta 
                       HttpEntity entity = res.getEntity(); 
                       result = EntityUtils.toString(entity);
-                      if(result.equals("[\"error\"]")) response.sendRedirect("error.jsp");
+                      if(result.equals("[]")) response.sendRedirect("error.jsp");
                       else{
-                          //Si no hay error se obtiene el array de Imagenes, si es nulo imagenes = null
-                          Type listType = new TypeToken<ArrayList<Image>>(){}.getType();
-                          imagenes = new Gson().fromJson(result, listType);
+                          JSONArray jsonArray = new JSONArray(result);
+                          //Si no hay error se obtiene el tipo de usuario
+                          //JSONArray jsonArray2 = jsonArray.getJSONArray(0);
+                          JSONObject tipusObject = jsonArray.getJSONObject(0);
+                          tipus = tipusObject.getString("");
+                          
                       }  
                         
                     } catch (Exception e){
@@ -71,36 +87,6 @@ public class login extends HttpServlet {
                 finally {
                     httpClient.close();
                 }
-
-                JSONObject obj;
-                boolean IsSuccessful;
-                try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                        CloseableHttpResponse resp = httpClient.execute(post)) {
-                    result = EntityUtils.toString(resp.getEntity());
-                    obj = new JSONObject(result);
-                    IsSuccessful = obj.getBoolean("IsSuccessful");
-                    resp.close();
-                    httpClient.close();
-                } catch (Exception e) {
-                    Logger.getLogger(registrarImagen.class.getName()).log(Level.SEVERE, null, e);
-                    IsSuccessful = false;
-                }
-                
-                
-                
-                
-                
-                
-                
-                if (usuarioDB.consultaUsuarioyPassword()) {
-                    sesion.setAttribute("user", name_user);
-                    response.sendRedirect("menu.jsp");
-                }
-                else{
-                    response.sendRedirect("error.jsp");
-                }
-
-                base_dades.fiConexio();
             
             }
     }
