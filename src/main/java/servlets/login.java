@@ -41,7 +41,6 @@ public class login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
          HttpSession sesion = request.getSession(); 
-             
             if (sesion.getAttribute("user") != null ){
                 response.sendRedirect("menu.jsp");
             } else{
@@ -54,8 +53,7 @@ public class login extends HttpServlet {
                 String url = "http://127.0.0.1:5000/login?username=" + name_user + "&password=" + password;
                 CloseableHttpClient httpClient = HttpClients.createDefault();
                 
-                String result;
-                String tipus;
+                String result = "";
                 try{
                     HttpGet req = new HttpGet(url);
                     CloseableHttpResponse res = httpClient.execute(req); 
@@ -63,19 +61,16 @@ public class login extends HttpServlet {
                       //Se obtiene la respuesta 
                       HttpEntity entity = res.getEntity(); 
                       result = EntityUtils.toString(entity);
-                      if(result.equals("[]")) response.sendRedirect("error.jsp");
+                      if(result.equals("Error")) response.sendRedirect("error.jsp");
                       else{
-                          JSONArray jsonArray = new JSONArray(result);
-                          //Si no hay error se obtiene el tipo de usuario
-                          //JSONArray jsonArray2 = jsonArray.getJSONArray(0);
-                          JSONObject tipusObject = jsonArray.getJSONObject(0);
-                          tipus = tipusObject.getString("");
-                          
+                           sesion.setAttribute("user", name_user);
+                            sesion.setAttribute("tipo", result);
                       }  
                         
                     } catch (Exception e){
                         System.err.println(e.getMessage());
                         response.sendRedirect("error.jsp");
+
                     }
                     finally {
                         res.close();
@@ -87,8 +82,24 @@ public class login extends HttpServlet {
                 finally {
                     httpClient.close();
                 }
+                
+                if("Alumno".equals(result)){
+                    response.sendRedirect("home-alumnos.jsp");
+
+                }
+                else if("Profesor".equals(result)){
+                    response.sendRedirect("home-profes.jsp");
+
+                }
+                else if("Admin".equals(result)){
+                    response.sendRedirect("home-administracion.jsp");
+
+                }
             
             }
+            
+           
+         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
