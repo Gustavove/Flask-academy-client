@@ -25,8 +25,8 @@ import org.json.JSONObject;
  *
  * @author gustavo
  */
-@WebServlet(name = "login", urlPatterns = {"/login"})
-public class login extends HttpServlet {
+@WebServlet(name = "mensajes", urlPatterns = {"/mensajes"})
+public class mensajes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,63 +40,73 @@ public class login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession sesion = request.getSession();  
-     
-        String name_user = request.getParameter("username");
-        String password = request.getParameter("password");
+        try (PrintWriter out = response.getWriter()) {
+            HttpSession sesion = request.getSession();  
+            if (sesion.getAttribute("user") == null){
+               response.sendRedirect("login.jsp");
+            }
 
-        /*Conexión con el servicio */ 
+            if("Alumno".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-alumnos.jsp");
+            }
 
-        String url = "http://127.0.0.1:5000/login?username=" + name_user + "&password=" + password;
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+            if("Profesor".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-profes.jsp");
+            }
 
-        String result = "";
-        try{
-            HttpGet req = new HttpGet(url);
-            CloseableHttpResponse res = httpClient.execute(req); 
-            try{
-              //Se obtiene la respuesta 
-              HttpEntity entity = res.getEntity(); 
-              result = EntityUtils.toString(entity);
-              if(result.equals("Error")) response.sendRedirect("error.jsp");
-              else{
-                   sesion.setAttribute("user", name_user);
-                   sesion.setAttribute("tipo", result);
-              }  
-
-            } catch (Exception e){
+            String profe = request.getParameter("profesor");
+            
+            try {
+                String result = "";
+                
+                //Conexión con el servicio mediante GET
+                String url = "http://127.0.0.1:5000//admin/mensajes?profesor="+profe;
+                CloseableHttpClient httpClient = HttpClients.createDefault();
+               
+                try{
+                    HttpGet req = new HttpGet(url);
+                    CloseableHttpResponse res = httpClient.execute(req); 
+                    try{
+                      //Se obtiene la respuesta 
+                      HttpEntity entity = res.getEntity(); 
+                      result = EntityUtils.toString(entity);
+                        
+                    } catch (Exception e){
+                        System.err.println(e.getMessage());
+                        response.sendRedirect("error.jsp");
+                    }
+                    finally {
+                        res.close();
+                    }
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
+                    response.sendRedirect("error.jsp");
+                }
+                finally {
+                    httpClient.close();
+                }
+             
+                out.println("<table style=\"width:60%\">");
+                if(!"[]".equals(result)){
+                    JSONArray profes = new JSONArray(result);
+                    for(int i = 0; i<profes.length(); i++){
+                        JSONObject object = profes.getJSONObject(i);
+                        String mensaje = object.getString("Mensaje");
+                        
+                        out.println("<tr> <td> Mensaje " + i + ": " + mensaje + "</td> </tr>");
+                        
+                    }
+                } else {
+                    out.println("<p> No hay mensajes que mostrar </p>");
+                }
+                out.println("</table>");
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
                 response.sendRedirect("error.jsp");
-
             }
-            finally {
-                res.close();
-            }
-        } catch (Exception e){
-            System.err.println(e.getMessage());
-            response.sendRedirect("error.jsp");
-        }
-        finally {
-            httpClient.close();
-        }
-
-        if("Alumno".equals(result)){
-            response.sendRedirect("home-alumnos.jsp");
-
-        }
-        else if("Profesor".equals(result)){
-            response.sendRedirect("home-profes.jsp");
-
-        }
-        else if("Admin".equals(result)){
-            response.sendRedirect("home-administracion.jsp");
-
-        }
             
-            
-            
-           
-         
+            out.println("<br> <a href='home-administracion.jsp'>Volver al menú</a>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

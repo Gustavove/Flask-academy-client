@@ -46,7 +46,20 @@ public class registrar_profesor extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HttpSession sesion = request.getSession();
+            HttpSession sesion = request.getSession();  
+            if (sesion.getAttribute("user") == null){
+               response.sendRedirect("login.jsp");
+            }
+
+            if("Alumno".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-alumnos.jsp");
+            }
+
+            if("Profesor".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-profes.jsp");
+            }
+
+            
             if (sesion.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             }

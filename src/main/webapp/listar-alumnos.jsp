@@ -1,5 +1,5 @@
 <%-- 
-    Document   : listar-profesores
+    Document   : listar-alumnos
     Created on : 17 dic. 2021, 21:18:13
     Author     : gustavo
 --%>
@@ -49,16 +49,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Listar Profesores</title>
+        <title>Listar Alumnos</title>
     </head>
     <body>
-	<h1>Listar Imagenes</h1>         
+	<h1>Listar Alumnos</h1>         
 <%
             try {
                 String result = "";
                 
                 //Conexión con el servicio mediante GET
-                String url = "http://127.0.0.1:5000/admin/lista_profes";
+                String url = "http://127.0.0.1:5000/admin/lista_alumnos";
                 CloseableHttpClient httpClient = HttpClients.createDefault();
                
                 try{
@@ -84,18 +84,24 @@
                     httpClient.close();
                 }
              
-                
                 out.println("<table style=\"width:60%\">");
                 if(!"[]".equals(result)){
-                    JSONArray profes = new JSONArray(result);
-                    for(int i = 0; i<profes.length(); i++){
-                        JSONObject object = profes.getJSONObject(i);
-                        String nombre = object.getString("Profesor");
-                        Integer puntuacion = object.getInt("Puntuacion");
+                    JSONArray alumnos = new JSONArray(result);
+                    for(int i = 0; i<alumnos.length(); i++){
+                        JSONObject object = alumnos.getJSONObject(i);
+                        String nombre = object.getString("Nombre");
+                        Integer age = object.getInt("Age");
+                        Integer pago_hecho = object.getInt("Pago_hecho");
+                        String tutor = object.getString("Tutor_legal");
+                        Integer id_grupo = object.getInt("Id_grupo");
                         
-                        out.println("<tr> <td> Profesor </td>  <td>" + nombre + "</td> </tr>");
-                        out.println("<tr> <td> Puntuación </td> <td>" + puntuacion.toString()+ "</td> </tr>");
-                        out.println("<td> <a href='./mensajes?profesor=" + nombre + "'>Ver mensajes</a> </td>");
+                        out.println("<tr> <td> Alumno </td>  <td>" + nombre + "</td> </tr>");
+                        out.println("<tr> <td> Años </td>  <td>" + age + "</td> </tr>");
+                        out.println("<tr> <td> Pago </td>  <td>" + pago_hecho.toString() + "</td> </tr>");
+                        out.println("<tr> <td> Tutor </td>  <td>" + tutor + "</td> </tr>");
+                        out.println("<tr> <td> Id_grupo </td>  <td>" + id_grupo.toString() + "</td> </tr>");
+                        
+                        out.println("<td> <a href='./modificar-alumno.jsp?nombre=" + nombre + "'>Modificar información</a> </td>");
 
                     }
                 } else {

@@ -11,22 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
  * @author gustavo
  */
-@WebServlet(name = "login", urlPatterns = {"/login"})
-public class login extends HttpServlet {
+@WebServlet(name = "modificar_alumno", urlPatterns = {"/modificar_alumno"})
+public class modificar_alumno extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,63 +31,18 @@ public class login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession sesion = request.getSession();  
-     
-        String name_user = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        /*Conexión con el servicio */ 
-
-        String url = "http://127.0.0.1:5000/login?username=" + name_user + "&password=" + password;
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        String result = "";
-        try{
-            HttpGet req = new HttpGet(url);
-            CloseableHttpResponse res = httpClient.execute(req); 
-            try{
-              //Se obtiene la respuesta 
-              HttpEntity entity = res.getEntity(); 
-              result = EntityUtils.toString(entity);
-              if(result.equals("Error")) response.sendRedirect("error.jsp");
-              else{
-                   sesion.setAttribute("user", name_user);
-                   sesion.setAttribute("tipo", result);
-              }  
-
-            } catch (Exception e){
-                System.err.println(e.getMessage());
-                response.sendRedirect("error.jsp");
-
-            }
-            finally {
-                res.close();
-            }
-        } catch (Exception e){
-            System.err.println(e.getMessage());
-            response.sendRedirect("error.jsp");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet modificar_alumno</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet modificar_alumno at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        finally {
-            httpClient.close();
-        }
-
-        if("Alumno".equals(result)){
-            response.sendRedirect("home-alumnos.jsp");
-
-        }
-        else if("Profesor".equals(result)){
-            response.sendRedirect("home-profes.jsp");
-
-        }
-        else if("Admin".equals(result)){
-            response.sendRedirect("home-administracion.jsp");
-
-        }
-            
-            
-            
-           
-         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
