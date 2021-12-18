@@ -70,8 +70,7 @@ public class foto_tutor extends HttpServlet {
             out.println("<body>");
 
             out.println("<h1>Foto del tutor: </h1>");
-            out.println("<img src='data:image/jpg;base64, " + file + "' alt= 'No se puede visualizar la imagen'/>");
-
+            out.println("<img id=\"base64ImageForDisplay\" alt=\"No se puede ver la imagen\" src=\"data:image/png;base64," + file +" style=\"display: block;\">");
             out.println("<br>");
             out.println("<a href='./home-administracion.jsp'> Volver al menu principal</a>");
             out.println("</body>");
