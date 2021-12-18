@@ -40,7 +40,7 @@
                 String result = "";
 
                 //Conexión con el servicio mediante GET
-                String url = "http://127.0.0.1:5000/alumnos/mis_asignaturas?nombre_alumno=" + "Paula";
+                String url = "http://127.0.0.1:5000/alumnos/mis_asignaturas?nombre_alumno=" + sesion.getAttribute("user");
                 CloseableHttpClient httpClient = HttpClients.createDefault();
 
                 try {
@@ -63,12 +63,14 @@
                 } finally {
                     httpClient.close();
                 }
+                out.println("<table style=\"width:60%\">");
                 if (!"[]".equals(result)) {
                     JSONArray asigs = new JSONArray(result);
                     for (int i = 0; i < asigs.length(); i++) {
                         String result2 = "";
                         JSONObject object = asigs.getJSONObject(i);
                         String asignatura = object.getString("Asignatura");
+                        out.println("<h3>" + asignatura + "</h3>");
                         String url2 = "http://127.0.0.1:5000/alumnos/ficheros_de_asignatura?asignatura=" + asignatura;
                         CloseableHttpClient httpClient2 = HttpClients.createDefault();
 
@@ -92,20 +94,21 @@
                         } finally {
                             httpClient.close();
                         }
-                        out.println("<table style=\"width:60%\">");
                         if (!"[]".equals(result2)) {
+                            out.println("<table style=\"width:60%\">");
                             JSONArray archivos = new JSONArray(result2);
                             for (int j = 0; j < archivos.length(); j++) {
                                 JSONObject object2 = archivos.getJSONObject(j);
                                 String nombre = object2.getString("Nombre_fichero");
-                                out.println("<tr> <td> Alumno </td>  <td>" + nombre + "</td>   <td><a href='./modificar-alumno.jsp?nombre=" + nombre + "'>Modificar información</a> </td></tr>");
+                                out.println("<tr><td>" + nombre + "</td>   <td><a href='./descargar_archivo.jsp?asignatura="+asignatura+"&nombre=" + nombre + "'>Descargar archivo</a> </td></tr>");
                             }
+                            out.println("</table>");
                         } else {
                             out.println("<p> No hay profesores en el sistema</p>");
                         }
                     }
 
-                    out.println("</table>");
+                    
                 }
                 }catch (Exception e) {
                 System.err.println(e.getMessage());
