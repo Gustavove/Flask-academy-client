@@ -101,11 +101,12 @@
                         out.println("<tr> <td> Tutor </td>  <td>" + tutor + "</td> </tr>");
                         out.println("<tr> <td> Id_grupo </td>  <td>" + id_grupo.toString() + "</td> </tr>");
                         
-                        out.println("<td> <a href='./modificar-alumno.jsp?nombre=" + nombre + "'>Modificar información</a> </td>");
+                        out.println("<tr> <td> <a href='./modificar-alumno.jsp?nombre=" + nombre + "'>Modificar información</a> </td> </tr>");
+                        out.println("<tr> <td> <a href='./foto_tutor?nombre=" + nombre + "'>Ver fotografía del tutor</a> </td> </tr>");
 
                     }
                 } else {
-                    out.println("<p> No hay profesores en el sistema</p>");
+                    out.println("<p> No hay profesores en el alumnos</p>");
                 }
                 out.println("</table>");
             } catch (Exception e) {

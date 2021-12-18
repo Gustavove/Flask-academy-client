@@ -72,7 +72,7 @@ public class registrar_alumno extends HttpServlet {
                 String edad = request.getParameter("edad");
                 String pago = request.getParameter("pago");
                 String tutor_legal = request.getParameter("tutor_legal");
-                String id_grupo = (String) sesion.getAttribute("id_grupo");
+                String id_grupo = request.getParameter("id_grupo");
                 
                 // Subida del archivo                
                 byte[] data = null;
