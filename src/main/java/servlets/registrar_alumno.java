@@ -5,17 +5,21 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -30,6 +34,7 @@ import org.apache.http.util.EntityUtils;
  * @author gustavo
  */
 @WebServlet(name = "registrar_alumno", urlPatterns = {"/registrar_alumno"})
+@MultipartConfig
 public class registrar_alumno extends HttpServlet {
 
     /**
@@ -58,11 +63,7 @@ public class registrar_alumno extends HttpServlet {
                 response.sendRedirect("home-profes.jsp");
             }
 
-            if (sesion.getAttribute("user") == null) {
-                response.sendRedirect("login.jsp");
-            }
-
-            if (!request.getParameter("nombre").isEmpty() && !request.getParameter("edad").isEmpty()
+            if (!request.getParameter("nombre").isEmpty() && !request.getParameter("edad").isEmpty() 
                     && !request.getParameter("pago").isEmpty() && !request.getParameter("tutor_legal").isEmpty()
                     && !request.getParameter("id_grupo").isEmpty()) {
                 
@@ -72,6 +73,21 @@ public class registrar_alumno extends HttpServlet {
                 String pago = request.getParameter("pago");
                 String tutor_legal = request.getParameter("tutor_legal");
                 String id_grupo = (String) sesion.getAttribute("id_grupo");
+                
+                // Subida del archivo                
+                byte[] data = null;
+                
+                try (InputStream is = request.getPart("foto").getInputStream()) {
+                    int i = is.available();
+                    data = new byte[i];
+                    is.read(data);
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
+                }
+                
+                
+                //Convertir a String 
+                String file = Base64.getEncoder().encodeToString(data);
                 
                 //Conexión con el servicio
                 String result;
@@ -85,20 +101,21 @@ public class registrar_alumno extends HttpServlet {
                 urlParameters.add(new BasicNameValuePair("pago_hecho", pago));
                 urlParameters.add(new BasicNameValuePair("tutor_legal", tutor_legal));
                 urlParameters.add(new BasicNameValuePair("id_grupo", id_grupo));
+                urlParameters.add(new BasicNameValuePair("foto", file));
 
                 post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
                 try (CloseableHttpClient httpClient = HttpClients.createDefault();
                         CloseableHttpResponse resp = httpClient.execute(post)) {
                     result = EntityUtils.toString(resp.getEntity());
+
                     resp.close();
                     httpClient.close();
                 } catch (Exception e) {
                     Logger.getLogger(registrar_alumno.class.getName()).log(Level.SEVERE, null, e);
                     result = "error";
                 }
-                
-                   
+                                
                 if ("Success!".equals(result)) {
                     out.println("<!DOCTYPE html>");
                     out.println("<html>");
@@ -134,7 +151,11 @@ public class registrar_alumno extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(registrar_alumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -148,7 +169,11 @@ public class registrar_alumno extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(registrar_alumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

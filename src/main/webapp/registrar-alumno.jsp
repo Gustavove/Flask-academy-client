@@ -27,7 +27,7 @@
         <title>Registrar Alumno</title>
     </head>
     <body>
-        <form action="registrar_alumno" method="post">
+        <form action="registrar_alumno" method="post" enctype="multipart/form-data">
             <table style="width: 50%">
                 <tr>
                     <td>Nombre</td>
@@ -49,6 +49,9 @@
                     <td>Id grupo</td>
                     <td><input type="text" name="id_grupo" /></td>
 		</tr>
+                <tr>Imagen del tutor legal</td>
+                    <td><input type="file" name="foto" accept="image/jpg"/></td>
+                </tr>
             </table>
             <input type="submit" value="Registrar" />
         </form>
