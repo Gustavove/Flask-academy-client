@@ -96,6 +96,7 @@
                         out.println("<tr> <td> Alumno </td>  <td>" + nombre + "</td> </tr>");
                         out.println("<tr> <td> Años </td>  <td>" + age + "</td> </tr>");
                         out.println("<tr> <td> Tutor </td>  <td>" + tutor + "</td> </tr>");
+                        out.println("<br>");
                     }
                     out.println("</table> <br>");    
                 } else {

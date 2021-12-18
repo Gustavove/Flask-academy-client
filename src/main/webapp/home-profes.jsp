@@ -28,6 +28,7 @@
     </head>
     <body>
         <a href="mis-alumnos.jsp">Ver mis alumnos</a><br>
+        <a href="mensaje-a-administracion.jsp">Mensaje para la administración</a><br>
         
         <a href="logout.jsp">Logout</a>
         <!-- Només ho poso com a comment el [G/J]-->

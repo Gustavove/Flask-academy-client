@@ -27,14 +27,16 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="mensaje-admin" method="post">
+        <form action="mensaje_admin" method="post">
             <table style="width: 50%">
                 <tr>
                     <td>Escribe un comentario:</td>
-                    <td><textarea name="comentario" rows="10" cols="50">Write something here</textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="comentario" rows="10" cols="50" placeholder="Inserta tu mensaje aqui..."></textarea></td>
 		</tr>
             </table>
-            <input type="submit" value="Registrar" />
+            <input type="submit" value="Enviar mensaje" />
         </form>
         
     </body>

@@ -27,6 +27,7 @@
         <title>Menu</title>
     </head>
     <body>
+        <a href="apuntes-alumnos.jsp">Consultar mis apuntes</a><br>
         <a href="ver-info-alumno.jsp">Consultar información de alumnos</a><br>
         <a href="ver-info-profes.jsp">Ver información de todos los profes</a><br>
         <a href="registrar-alumno.jsp">Registrar alumno</a><br>
