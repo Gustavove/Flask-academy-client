@@ -5,6 +5,21 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- Comprueba que el usuario tiene una sessión activa --%>
+<%
+    HttpSession sesion = request.getSession();  
+    if (sesion.getAttribute("user") == null){
+       response.sendRedirect("login.jsp");
+    }
+    
+    if("Alumno".equals(sesion.getAttribute("tipo"))){
+        response.sendRedirect("home-alumnos.jsp");
+    }
+    
+    if("Admin".equals(sesion.getAttribute("tipo"))){
+        response.sendRedirect("home-profes.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +27,15 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <form action="mensaje-admin" method="post">
+            <table style="width: 50%">
+                <tr>
+                    <td>Escribe un comentario:</td>
+                    <td><textarea name="comentario" rows="10" cols="50">Write something here</textarea></td>
+		</tr>
+            </table>
+            <input type="submit" value="Registrar" />
+        </form>
+        
     </body>
 </html>
