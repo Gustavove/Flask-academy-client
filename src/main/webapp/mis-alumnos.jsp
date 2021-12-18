@@ -108,6 +108,6 @@
             
            
         %>
-        <br> <a href='menu.jsp'>Volver al menú</a>
+        <br> <a href='home-profes.jsp'>Volver al menú</a>
     </body>
 </html>
