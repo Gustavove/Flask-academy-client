@@ -74,6 +74,9 @@
                         out.println("<div>Años</div>");
                         Integer age = obj.getInt("Age");
                         out.println("<input type=\"text\" name=\"age\" required='required' value="+ age.toString() +">");
+                        out.println("<div>Pago hecho</div>");
+                        Integer pago = obj.getInt("Pago_hecho");
+                        out.println("<input type=\"text\" name=\"pago\" required='required' value="+ pago.toString() +">");
                         out.println("<div>Tutor legal</div>");
                         out.println("<input type=\"text\" name=\"tutor_legal\" required='required' value="+obj.getString("Tutor_legal")+">");
                         out.println("<div>Id grupo</div>");
