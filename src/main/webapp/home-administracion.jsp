@@ -29,7 +29,8 @@
     <body>
         <a href="registrar-profesor.jsp">Registrar profesor</a><br>
         <a href="registrar-alumno.jsp">Registrar alumno</a><br>
-        <a href="consulta-profe.jsp">Ver información de un profesor</a><br><br>
+        <a href="listar-profesores.jsp">Listar profesores</a><br><br>
+        <a href="listar-alumnos.jsp">Listar alumnos</a><br><br>
         
         <a href="logout.jsp">Logout</a>
         <!-- Només ho poso com a comment el [G/J]-->
