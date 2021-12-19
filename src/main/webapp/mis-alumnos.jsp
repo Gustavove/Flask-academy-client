@@ -58,7 +58,7 @@
                 String result = "";
                 
                 //Conexión con el servicio mediante GET
-                String url = "http://127.0.0.1:5000//profesores/mis_alumnos?nombre=" + sesion.getAttribute("user");
+                String url = "http://127.0.0.1:5000/profesores/mis_alumnos?nombre=" + sesion.getAttribute("user");
                 CloseableHttpClient httpClient = HttpClients.createDefault();
                 
                 try{

@@ -40,6 +40,7 @@
                 String directorio = request.getParameter("asignatura");
                 String archivo = request.getParameter("nombre");
                 String url = "http://127.0.0.1:5000/alumnos/apuntes/" + directorio + '/' + archivo;
+                out.println("<h1>"+ url +"</h1>");
                 CloseableHttpClient httpClient = HttpClients.createDefault();
 
                 try {

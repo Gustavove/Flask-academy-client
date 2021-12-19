@@ -28,10 +28,7 @@
     </head>
     <body>
         <a href="apuntes-alumnos.jsp">Consultar mis apuntes</a><br>
-        <a href="ver-info-alumno.jsp">Consultar información de alumnos</a><br>
-        <a href="ver-info-profes.jsp">Ver información de todos los profes</a><br>
-        <a href="registrar-alumno.jsp">Registrar alumno</a><br>
-        <a href="consulta-profe.jsp">Ver información de un profesor</a><br><br>
+        <a href="puntuacion-profes-by-alumnos.jsp">Puntuar mis profesores</a><br>
         
         <a href="logout.jsp">Logout</a>
         <!-- Només ho poso com a comment el [G/J]-->

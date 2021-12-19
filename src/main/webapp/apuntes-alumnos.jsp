@@ -100,7 +100,8 @@
                             for (int j = 0; j < archivos.length(); j++) {
                                 JSONObject object2 = archivos.getJSONObject(j);
                                 String nombre = object2.getString("Nombre_fichero");
-                                out.println("<tr><td>" + nombre + "</td>   <td><a href='./descargar_archivo.jsp?asignatura="+asignatura+"&nombre=" + nombre + "'>Descargar archivo</a> </td></tr>");
+                                String path = object2.getString("Path");
+                                out.println("<tr><td>" + nombre + "</td>   <td><a href='./descargar_archivo.jsp?asignatura="+asignatura+"&nombre=" + path + "'>Descargar archivo</a> </td></tr>");
                             }
                             out.println("</table>");
                         } else {

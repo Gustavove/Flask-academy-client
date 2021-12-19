@@ -4,9 +4,25 @@
         <servlet-name>mensaje_admin</servlet-name>
         <servlet-class>servlets.mensaje_admin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>subir_apuntes</servlet-name>
+        <servlet-class>servlets.subir_apuntes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>puntuar_profesor</servlet-name>
+        <servlet-class>servlets.puntuar_profesor</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mensaje_admin</servlet-name>
         <url-pattern>/mensaje_admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>subir_apuntes</servlet-name>
+        <url-pattern>/subir_apuntes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>puntuar_profesor</servlet-name>
+        <url-pattern>/puntuar_profesor</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
