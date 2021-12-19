@@ -44,8 +44,19 @@ public class modificar_alumno extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+             HttpSession sesion = request.getSession();  
+            if (sesion.getAttribute("user") == null){
+               response.sendRedirect("login.jsp");
+            }
+
+            if("Alumno".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-alumnos.jsp");
+            }
+
+            if("Profesor".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-profes.jsp");
+            }
          try (PrintWriter out = response.getWriter()) {
-            HttpSession sesion = request.getSession();
             if (sesion.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             }

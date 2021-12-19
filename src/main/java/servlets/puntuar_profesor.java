@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,6 +37,18 @@ public class puntuar_profesor extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+            HttpSession sesion = request.getSession();  
+            if (sesion.getAttribute("user") == null){
+               response.sendRedirect("login.jsp");
+            }
+
+            if("Admin".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-administracion.jsp");
+            }
+
+            if("Profesor".equals(sesion.getAttribute("tipo"))){
+                response.sendRedirect("home-profes.jsp");
+            }
         try (PrintWriter out = response.getWriter()) {
             String result = "";
             if (!request.getParameter("puntuacion").isEmpty()){
