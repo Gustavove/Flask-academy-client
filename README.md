@@ -1,5 +1,5 @@
 # Flask-academy
-Flask-academy is an API RESTful that provides management services for members of the board, students, teachers and a repository of notes for educational academies.
+Flask-academy is an API that provides management services for members of the board, students, teachers and a repository of notes for educational academies.
 This is a simple web application that tests that service.
 
 ## Authors
